@@ -1,0 +1,30 @@
+* {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+nav>a {
+    cursor: default;
+}
+
+.box-main-text {
+    width: 70%;
+    margin-top: 2%;
+    margin-left: 15%;
+}
+
+
+/* ICONS */
+
+i {
+    font-size: 2em;
+}
+
+.fa-space-shuttle {
+    font-size: 0.7em;
+}
