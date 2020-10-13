@@ -28,3 +28,30 @@ i {
 .fa-space-shuttle {
     font-size: 0.7em;
 }
+
+.card {
+    padding: 0 !important;
+    padding-bottom: 5% !important;
+}
+
+#box-show-projects {
+    width: 70%;
+    margin-left: 15%;
+}
+
+.row {
+    margin-bottom: 2%;
+}
+
+.col-6 {
+    width: 40% !important;
+    flex: none !important;
+}
+
+.col-6:first-child {
+    margin-right: 10%;
+}
+
+.col-6:last-child {
+    margin-left: 10%;
+}
