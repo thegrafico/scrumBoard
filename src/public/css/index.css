@@ -29,6 +29,9 @@ i {
     font-size: 0.7em;
 }
 
+
+/* CARDS FOR SHOWING PROJETS */
+
 .card {
     padding: 0 !important;
     padding-bottom: 5% !important;
@@ -36,22 +39,16 @@ i {
 
 #box-show-projects {
     width: 70%;
-    margin-left: 15%;
 }
 
 .row {
     margin-bottom: 2%;
 }
 
-.col-6 {
-    width: 40% !important;
-    flex: none !important;
+.card {
+    margin-left: 3%;
 }
 
-.col-6:first-child {
-    margin-right: 10%;
-}
-
-.col-6:last-child {
+.card:first-child {
     margin-left: 10%;
 }
