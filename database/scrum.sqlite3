@@ -1,0 +1,28 @@
+
+-- -- Create table user 
+-- CREATE TABLE IF NOT EXISTS USER(
+--     user_id INTEGER PRIMARY KEY,
+--     name TEXT NOT NULL,
+--     email TEXT NOT NULL UNIQUE,
+--     password TEXT NOT NULL
+-- );
+
+-- -- Create table project
+-- CREATE TABLE IF NOT EXISTS PROJECT(
+--     project_id INTEGER PRIMARY KEY,
+--     status TEXT DEFAULT "new",
+--     name TEXT NOT NULL,
+--     description TEXT NOT NULL,
+--     date_created TEXT NOT NULL,
+--     owner_id INTEGER,
+--         FOREIGN KEY (owner_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
+-- );
+
+-- -- CREATE USER PROJECT TABLE
+-- CREATE TABLE IF NOT EXISTS PROJECT_USER(
+--     user_id INTEGER,
+--     project_id INTEGER,
+--     date_user_was_added TEXT NOT NULL,
+--         FOREIGN KEY (user_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+--         FOREIGN KEY (project_id) REFERENCES PROJECT(project_id) ON DELETE CASCADE ON UPDATE CASCADE
+-- );

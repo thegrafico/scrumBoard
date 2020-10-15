@@ -1,5 +1,12 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database('scrumDB.sqlite3', createTable);
+
+function createTable() {
+    console.log("createTable lorem");
+    db.run("CREATE TABLE IF NOT EXISTS lorem (info TEXT)");
+}
 
 require('electron-reload')(__dirname);
 
