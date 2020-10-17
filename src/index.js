@@ -1,20 +1,17 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('scrumDB.sqlite3', createTable);
-
-function createTable() {
-    console.log("createTable lorem");
-    db.run("CREATE TABLE IF NOT EXISTS lorem (info TEXT)");
-}
-
+let { db } = require('../database/db_handler');
+let conn = new db("scrumDB.sqlite3");
 require('electron-reload')(__dirname);
+
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
     // eslint-disable-line global-require
     app.quit();
 }
+
+// conn.create_user("Raul Pichardo", "raul022107@gmail.com", "xxxxx");
 
 const createWindow = () => {
     // Create the browser window.
