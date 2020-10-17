@@ -1,7 +1,19 @@
+//  Dependencies
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
-let { db } = require('../database/db_handler');
-let conn = new db("scrumDB.sqlite3");
+const { db } = require('../database/db_handler');
+const conn = new db("scrumDB.sqlite3");
+
+
+conn.getProjectsByUser().then(results => {
+    console.log(results);
+}).catch(err => {
+    console.log("err: ", err);
+
+});
+
+
+// reload electron
 require('electron-reload')(__dirname);
 
 
@@ -11,7 +23,15 @@ if (require("electron-squirrel-startup")) {
     app.quit();
 }
 
-// conn.create_user("Raul Pichardo", "raul022107@gmail.com", "xxxxx");
+
+// ========= CREATING A USER =========
+// conn.createUser("Raul Pichardo", "raul022107@gmail.com", "xxxxxxx").then((userID) => {
+//     console.log("User was created with the id: ", userID);
+// }).catch((err) => {
+//     console.log("ERROR: ", err);
+// });
+// ==================================
+
 
 const createWindow = () => {
     // Create the browser window.
@@ -21,7 +41,8 @@ const createWindow = () => {
         title: "ScrumBoard",
         webPreferences: {
             nodeIntegration: true,
-            worldSafeExecuteJavaScript: true
+            worldSafeExecuteJavaScript: true,
+            enableRemoteModule: true
         },
     });
 
@@ -58,6 +79,7 @@ app.on("activate", () => {
 
 module.exports = {
     createWindow,
+    conn
 };
 
 // In this file you can include the rest of your app's specific main process

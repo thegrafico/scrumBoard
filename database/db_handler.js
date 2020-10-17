@@ -1,5 +1,8 @@
 var sqlite3 = require('sqlite3').verbose();
+const errorMsg = require('../src/public/js/error-code');
+const STATUS = { new: "new", active: "active", closed: "closed" };
 
+let USERID = 1;
 
 class ScrumDB {
 
@@ -18,28 +21,93 @@ class ScrumDB {
      * @param {String} userEmail - email of the user
      * @param {String} password - password for the user
      */
-    create_user(userName, userEmail, password) {
+    createUser(userName, userEmail, password) {
 
-        let params = [
-            { var: userName, type: 's', canBeNull: false },
-            { var: userEmail, type: 's', canBeNull: false },
-            { var: password, type: 's', canBeNull: false }
-        ];
+        let father = this;
+        return new Promise(function(resolve, reject) {
 
-        // verify if the parameters are good to use
-        if (!this._verifyParameters(params)) {
-            console.log("Bad Parameters");
-        } else {
-            console.log("Good Parameters");
-        }
+            let params = [
+                { var: userName, type: 's', canBeNull: false },
+                { var: userEmail, type: 's', canBeNull: false },
+                { var: password, type: 's', canBeNull: false }
+            ];
 
-        let create_user = `INSERT INTO USER (user_id, name, email, password, date_user_was_added) VALUES(?, ?, ?, ?, ?)`;
+            // verify if the parameters are good to use
+            if (!father._verifyParameters(params)) {
+                console.log("Bad Parameters");
+                return reject(errorMsg.BAD_PARAMETER);
+            }
 
-        this.db.run(create_user, [null, userName, userEmail, password, this._getDate()], function(err) {
-            // get the last insert id
-            console.log(`A row has been inserted with rowid ${this.lastID}`);
-        })
+            let create_user = `INSERT INTO USER (user_id, name, email, password, date_user_was_added) VALUES(?, ?, ?, ?, ?)`;
+
+
+            father.db.run(create_user, [null, userName.toLocaleLowerCase(), userEmail.toLocaleLowerCase(), password, father._getDate()], function(err) {
+
+                if (err) return reject(err);
+
+                // return user id
+                resolve(this.lastID);
+            });
+        });
     }
+
+    /**
+     * 
+     * @param {Number} userId - id of the user - who created the project 
+     * @param {String} name  - name of the project
+     * @param {String} description - description of the project
+     */
+    createProject(name, description, userId = USERID) {
+
+        let father = this;
+
+        return new Promise(function(resolve, reject) {
+
+            let params = [
+                { var: userId, type: 'n', canBeNull: false },
+                { var: name, type: 's', canBeNull: false },
+                { var: description, type: 's', canBeNull: true },
+            ];
+
+            // verify parameters
+            if (!father._verifyParameters(params)) { return reject(errorMsg.BAD_PARAMETER) }
+
+            // query for db
+            let create_project = 'INSERT INTO PROJECT (project_id, status, name, description, date_created, owner_id) VALUES (?, ?, ?, ?, ?, ?)';
+
+            // create table
+            father.db.run(create_project, [null, STATUS.new, name, description, father._getDate(), userId], function(err) {
+                if (err) return reject(err);
+
+                // return id of the project created
+                resolve(this.lastID);
+            });
+        });
+    }
+
+    /**
+     * 
+     * @param {Number} userId - id of the user 
+     */
+    getProjectsByUser(userId = USERID) {
+        let father = this;
+        return new Promise(function(resolve, reject) {
+
+            // verify userid
+            if (!father._verifyParameters([{ var: userId, type: 'n', canBeNull: false }])) {
+                return reject(errorMsg.BAD_PARAMETER);
+            }
+
+            let getProjects = `SELECT * FROM PROJECT WHERE owner_id = ?`;
+
+
+            father.db.all(getProjects, [userId], function(err, results) {
+                return (err != undefined) ? reject(err) : resolve(results);
+            });
+
+        });
+    }
+
 
     /**
      * @return {String}- todays date in the following format: month/day/year
@@ -106,13 +174,5 @@ class ScrumDB {
     }
 
 }
-// CREATE TABLE IF NOT EXISTS USER(
-//     --     user_id INTEGER PRIMARY KEY,
-//     --     name TEXT NOT NULL,
-//     --     email TEXT NOT NULL UNIQUE,
-//     --     password TEXT NOT NULL,
-//     --     date_user_was_added TEXT
-//     -- );
 
-
-module.exports = { db: ScrumDB }
+module.exports = { db: ScrumDB, status: STATUS };
