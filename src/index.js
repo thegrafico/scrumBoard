@@ -1,21 +1,15 @@
 //  Dependencies
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
-const { db } = require('../database/db_handler');
+const { mySession } = require('./storage/mySession');
+
+const { db, status } = require('../database/db_handler');
 const conn = new db("scrumDB.sqlite3");
 
-
-conn.getProjectsByUser().then(results => {
-    console.log(results);
-}).catch(err => {
-    console.log("err: ", err);
-
-});
-
+let sess = new mySession({ time: "2h" });
 
 // reload electron
 require('electron-reload')(__dirname);
-
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -34,6 +28,9 @@ if (require("electron-squirrel-startup")) {
 
 
 const createWindow = () => {
+
+    sess.set("user", "Raul");
+
     // Create the browser window.
     const mainWindow = new BrowserWindow({
         width: 800,
@@ -79,7 +76,9 @@ app.on("activate", () => {
 
 module.exports = {
     createWindow,
-    conn
+    conn,
+    status,
+    session: sess
 };
 
 // In this file you can include the rest of your app's specific main process

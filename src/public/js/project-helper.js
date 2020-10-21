@@ -1,6 +1,6 @@
 // $('#dynamic-content').load('file:///my-partial.html')
 const { remote } = require("electron");
-const { conn, status } = remote.require('./index.js'); // getting the DB connection
+const { conn, status, session } = remote.require('./index.js'); // getting the DB connection
 
 
 // ================== VARIABLES =========================
@@ -24,9 +24,9 @@ const BOX_TEMPLATE_STATUS = "STATUS";
 const BOX_TEMPLATE_PROJECT_ID = "PROJECTID";
 
 // html template to add a new project
-let boxCardRowTemplate = `<div class="row"> HTML </div>`;
+let boxCardRowTemplate = `<div class="row"> ${BOX_FATHER_HTML} </div>`;
 let boxCardTemplate = `
-<div id='${BOX_TEMPLATE_PROJECT_ID}' class="col-3 card text-white bg-dark mb-6">
+<div id='${BOX_TEMPLATE_PROJECT_ID}' class="col-3 card text-white bg-dark mb-6 card-project">
     
     <div class="card-header"> 
         <span class='card-title'> ${BOX_TEMPLATE_STATUS} </span> - <span class='card-date'>${BOX_TEMPLATE_DATE}</span>
@@ -135,6 +135,7 @@ async function loadUserProjects() {
 }
 
 
+// LOGIG IS RUN HERE 
 $(document).ready(function() {
 
     // path for modal create
@@ -143,11 +144,8 @@ $(document).ready(function() {
     // load the modal once the document is fully loaded
     loadModal(createModalPath);
 
-
     // load user projects
     loadUserProjects();
-
-
 
     // EVENT WHEN THE USER CREATED A NEW PROJECT
     $('body').on('click', BTN_CREATE_MODAL, async function() {
@@ -167,4 +165,16 @@ $(document).ready(function() {
             console.log("Error creating the project");
         }
     });
+
+
+    // CLICK ON EACH CARD
+    $("body").on("click", ".card-project", function() {
+        console.log($(this).attr("id"));
+        // window.location.href='the_link_to_go_to.html';
+    });
+
+    console.log("SESSION: ", session.get("user"));
+    session.set("url", "URL SENT HERE");
+
+
 });

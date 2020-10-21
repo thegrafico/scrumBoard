@@ -63,3 +63,11 @@ i {
     font-style: italic;
     color: rgba(255, 255, 255, 0.5);
 }
+
+
+/* CARD FOR PROJECT */
+
+#box-show-projects .row .card-project:hover {
+    cursor: pointer;
+    background-color: rgba(232, 232, 232, 0.2) !important;
+}

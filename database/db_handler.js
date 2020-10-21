@@ -100,7 +100,6 @@ class ScrumDB {
 
             let getProjects = `SELECT * FROM PROJECT WHERE owner_id = ?`;
 
-
             father.db.all(getProjects, [userId], function(err, results) {
                 return (err != undefined) ? reject(err) : resolve(results);
             });
