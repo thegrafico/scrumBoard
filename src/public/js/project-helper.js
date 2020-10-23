@@ -38,6 +38,9 @@ let boxCardTemplate = `
     </div>
 </div>`;
 
+const REDIRECT_HTML = 'scrumMain.html';
+
+
 // ====================================================
 
 /**
@@ -138,6 +141,8 @@ async function loadUserProjects() {
 // LOGIG IS RUN HERE 
 $(document).ready(function() {
 
+    const viewsDir = session.get("projectDir");
+
     // path for modal create
     let createModalPath = '../views/partials/create-modal.html';
 
@@ -167,14 +172,21 @@ $(document).ready(function() {
     });
 
 
-    // CLICK ON EACH CARD
+    /**
+     * This functions redirect to a project
+     * When the user clicks the project it will load all information for that particular project
+     */
     $("body").on("click", ".card-project", function() {
-        console.log($(this).attr("id"));
-        // window.location.href='the_link_to_go_to.html';
+
+        // get project id
+        const projectId = $(this).attr("id");
+
+        // set the session of the project to load
+        session.set("currenProjectId", projectId);
+
+        // reditect to a page
+        redirect(viewsDir + "/views/scrumMain.html");
+
     });
-
-    console.log("SESSION: ", session.get("user"));
-    session.set("url", "URL SENT HERE");
-
 
 });

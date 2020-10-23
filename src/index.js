@@ -30,6 +30,7 @@ if (require("electron-squirrel-startup")) {
 const createWindow = () => {
 
     sess.set("user", "Raul");
+    sess.set("projectDir", __dirname);
 
     // Create the browser window.
     const mainWindow = new BrowserWindow({
