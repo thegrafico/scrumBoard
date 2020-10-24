@@ -1,6 +1,6 @@
 var sqlite3 = require('sqlite3').verbose();
 const errorMsg = require('../src/public/js/error-code');
-const STATUS = { new: "new", active: "active", closed: "closed" };
+const STATUS = { new: "new", active: "active", closed: "closed", project_status: ["new", "on track", "closed"] };
 
 let USERID = 1;
 

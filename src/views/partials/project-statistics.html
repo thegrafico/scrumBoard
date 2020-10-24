@@ -5,22 +5,14 @@
         <div class="col p-md-4">
             <p class="col-title">Status</p>
 
-            <i id="burnLogo" class="fas fa-burn"></i>
+            <i class="fas fa-burn icons"></i>
 
-            <a href="#statusMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <a id="btnToggleStatus" href="#statusMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <span id="currentStatus">New</span>
             </a>
 
             <ul class="collapse list-unstyled" id="statusMenu">
-                <li>
-                    <a href="#">New</a>
-                </li>
-                <li>
-                    <a href="#">On Track</a>
-                </li>
-                <li>
-                    <a href="#">Closed</a>
-                </li>
+
             </ul>
 
             <div class="mt-2">
@@ -34,10 +26,67 @@
             </div>
         </div>
         <div class="col p-md-3">
-            <p class="col-title">Track</p>
+            <p class="col-title">Project Description</p>
+
+            <i class="far fa-file-alt icons"></i>
+
+            <div class="row">
+                <div class="col">
+                    <p id="projectDescription"></p>
+                </div>
+
+            </div>
         </div>
         <div class="col p-md-3">
             <p class="col-title">Members</p>
+
+            <i class="fas fa-users icons"></i>
+
+
+            <div class="mt-2">
+                <p id="NumberOfMembers"> 10 Members</p>
+
+                <ul class="member-list list-unstyled">
+                    <li> <span id="memberOfMonth"> Member of the month: </span> <span id="memberOfMonthName">Raul Pichardo</span> </li>
+                    <br>
+                    <li>
+                        <div class="row user-row">
+                            <div class="col">
+                                <span>
+                                    <a href="" id="memberPerformances" > Edit Members </a> 
+                                </span>
+
+                            </div>
+
+                            <div class="col">
+                                <span> 
+                                    <a href="" id="memberPerformances" > Performances </a>
+                                </span>
+                            </div>
+
+                            <div class="col">
+                                <span> 
+                                    <a href="" id="memberPerformances" > Add Member </a>
+                                </span>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col p-md-4">
+            <p class="col-title">Sprints</p>
+
+
+            <i class="fas fa-running"></i>
+
+            <div class="mt-2">
+                <p>Sprints plots goes here </p>
+            </div>
         </div>
     </div>
 </div>

@@ -6,7 +6,15 @@ const { redirect, isObjectEmpty } = require('../public/js/helper-functions.js');
 
 
 // ==================== VARIABLES =========================
+// tags for the card project
 const tagProjectName = "#projectName";
+const tagOwnerName = "#ownerName";
+const tagStatusList = "#statusMenu";
+const tagCurrentStatus = "#currentStatus";
+const tagBtnToggleStatus = "#btnToggleStatus";
+const tagStartDate = "#startDate";
+const tagCurrentSprint = '#currentSprint';
+
 const PROJECT_STATISTICS = '../views/partials/project-statistics.html';
 
 
@@ -68,7 +76,13 @@ function fullHeight() {
  */
 function loadProjectToHtml(project) {
 
+    $(tagOwnerName).text("Raul Pichardo");
     $(tagProjectName).text(project["name"]);
+    $(tagStartDate).text(project["date_created"]);
+    $(tagCurrentSprint).text(" Sprint 1");
+    $(projectDescription).text(project["description"]);
+
+
 }
 
 /**
@@ -76,9 +90,42 @@ function loadProjectToHtml(project) {
  * @param {String} filePath 
  */
 function loadModal(filePath) {
-    $("#content").load(filePath);
+    $("#content").load(filePath, function() {
+        loadProjectStatus();
+    });
+
+
+
 }
 
+/**
+ * Load the status of the project
+ */
+function loadProjectStatus() {
+
+    $(tagCurrentStatus).text(status.project_status[0]);
+
+    for (indx in status.project_status) {
+        let mStatus = status.project_status[indx];
+
+        $(tagStatusList).append(`<li>  <a class='status-item' href='#'>${mStatus}</a>  </li>`);
+    }
+}
+
+
+function changeProjectStatus() {
+
+    $('body').on('click', '.status-item', function() {
+        // get the text of the btn pressed
+        let txt = $(this).text();
+
+        // change the text of the current status
+        $(tagCurrentStatus).text(txt);
+
+        // close all options 
+        $(tagBtnToggleStatus).click();
+    });
+}
 // ================================================================
 
 
@@ -87,6 +134,8 @@ $(document).ready(async function() {
     fullHeight();
 
     loadModal(PROJECT_STATISTICS);
+
+    changeProjectStatus();
 
     // ==============   GETTING PROJECT INFO ==============
 
@@ -108,6 +157,8 @@ $(document).ready(async function() {
         console.log("Project is empty");
         redirect(); // default redirect 
     }
+
+    console.log(projectInfo);
 
     loadProjectToHtml(projectInfo);
 

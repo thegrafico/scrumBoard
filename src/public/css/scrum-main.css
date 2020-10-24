@@ -31,6 +31,8 @@
     color: white;
     font-size: 1.5em;
     text-decoration: none;
+    font-weight: bold;
+    text-transform: capitalize;
 }
 
 a {
@@ -43,11 +45,45 @@ a:hover {
     color: #CD5C5C;
 }
 
-#burnLogo {
+.icons {
     margin-right: 3%;
-    color: #CD5C5C;
 }
 
 .status-list {
     font-weight: bold;
+}
+
+#statusMenu li {
+    text-transform: capitalize;
+}
+
+#memberOfMonthName {
+    font-weight: normal;
+    font-size: 0.9em;
+    padding-left: 1%;
+}
+
+.user-row .col,
+.user-row .col a {
+    text-align: center;
+    color: lemonchiffon;
+    text-decoration: underline;
+}
+
+.user-row .col a:hover {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.fa-users {
+    color: seagreen;
+}
+
+.fa-burn {
+    color: #CD5C5C;
+}
+
+.status-list li span {
+    font-weight: normal;
+    font-size: 0.9em;
+    padding-left: 1%;
 }
