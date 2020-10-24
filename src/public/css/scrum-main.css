@@ -1,0 +1,53 @@
+#projectName {
+    font-size: 0.9em;
+    text-align: center;
+    font-weight: bold;
+    color: lemonchiffon;
+    text-transform: uppercase;
+}
+
+.fa-bars {
+    font-size: 0.9em;
+}
+
+.box-title {
+    padding-bottom: 0.5%;
+    border-bottom: 1px solid rgba(240, 240, 240, 0.2);
+}
+
+.statistics-boxs .col {
+    margin: 1.5% 1.5% 0 1.5%;
+    background-color: #303030 !important;
+    border-radius: 2%;
+}
+
+.col-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+#currentStatus {
+    color: white;
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #CD5C5C;
+}
+
+#burnLogo {
+    margin-right: 3%;
+    color: #CD5C5C;
+}
+
+.status-list {
+    font-weight: bold;
+}

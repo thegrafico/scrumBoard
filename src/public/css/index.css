@@ -92,9 +92,10 @@ i {
 }
 
 #sidebar {
+    border-top: 0.1px solid rgba(255, 255, 255, 0.1);
     min-width: 300px;
     max-width: 300px;
-    background: #1d1919;
+    background: #303030 !important;
     color: #fff;
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;

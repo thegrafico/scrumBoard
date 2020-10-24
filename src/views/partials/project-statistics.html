@@ -1,0 +1,43 @@
+<h3 class="box-title">Statistics</h3>
+
+<div class="container-fluid statistics-boxs">
+    <div class="row">
+        <div class="col p-md-4">
+            <p class="col-title">Status</p>
+
+            <i id="burnLogo" class="fas fa-burn"></i>
+
+            <a href="#statusMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <span id="currentStatus">New</span>
+            </a>
+
+            <ul class="collapse list-unstyled" id="statusMenu">
+                <li>
+                    <a href="#">New</a>
+                </li>
+                <li>
+                    <a href="#">On Track</a>
+                </li>
+                <li>
+                    <a href="#">Closed</a>
+                </li>
+            </ul>
+
+            <div class="mt-2">
+                <p>Everything looks fine. Continue working</p>
+
+                <ul class="status-list list-unstyled">
+                    <li> Owner: <span id="ownerName"></span></li>
+                    <li>Project Start Date: <span id="startDate"></span></li>
+                    <li>Current Sprint: <span id="currentSprint"></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col p-md-3">
+            <p class="col-title">Track</p>
+        </div>
+        <div class="col p-md-3">
+            <p class="col-title">Members</p>
+        </div>
+    </div>
+</div>

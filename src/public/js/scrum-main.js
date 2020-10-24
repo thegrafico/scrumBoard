@@ -6,7 +6,8 @@ const { redirect, isObjectEmpty } = require('../public/js/helper-functions.js');
 
 
 // ==================== VARIABLES =========================
-
+const tagProjectName = "#projectName";
+const PROJECT_STATISTICS = '../views/partials/project-statistics.html';
 
 
 
@@ -32,8 +33,7 @@ function getProjectInfo(projectId) {
             reject(error);
         });
 
-        resolve(project);
-
+        resolve(project[0]);
     });
 }
 
@@ -51,10 +51,44 @@ function getProjectId() {
     return projectId;
 }
 
+/**
+ * This function set the height of the side var to the max for the windows
+ */
+function fullHeight() {
+
+    $('.js-fullheight').css('height', $(window).height());
+    $(window).resize(function() {
+        $('.js-fullheight').css('height', $(window).height());
+    });
+};
+
+/**
+ * Load the project to the html
+ * @param {Object} project - project data 
+ */
+function loadProjectToHtml(project) {
+
+    $(tagProjectName).text(project["name"]);
+}
+
+/**
+ * load the modal dynamically
+ * @param {String} filePath 
+ */
+function loadModal(filePath) {
+    $("#content").load(filePath);
+}
+
 // ================================================================
 
 
 $(document).ready(async function() {
+
+    fullHeight();
+
+    loadModal(PROJECT_STATISTICS);
+
+    // ==============   GETTING PROJECT INFO ==============
 
     // get the project id using the ssessions
     const projectId = getProjectId();
@@ -75,24 +109,12 @@ $(document).ready(async function() {
         redirect(); // default redirect 
     }
 
-    (function($) {
+    loadProjectToHtml(projectInfo);
 
-        "use strict";
+    // ====================================================
 
-        var fullHeight = function() {
-
-            $('.js-fullheight').css('height', $(window).height());
-            $(window).resize(function() {
-                $('.js-fullheight').css('height', $(window).height());
-            });
-
-        };
-        fullHeight();
-
-        $('#sidebarCollapse').on('click', function() {
-            $('#sidebar').toggleClass('active');
-        });
-
-    })(jQuery);
-
+    // TOGGLE THE SIDEVAR 
+    $('#sidebarCollapse').on('click', function() {
+        $('#sidebar').toggleClass('active');
+    });
 });
