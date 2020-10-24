@@ -1,3 +1,8 @@
+const { remote } = require("electron");
+const { session } = remote.require('./index.js'); // getting the DB connection
+
+const viewsDir = session.get("projectDir");
+
 /**
  * Redirect to a HTML page
  * @param {String} html - path with html file 
@@ -5,9 +10,9 @@
 function redirect(html) {
 
     if (html == undefined || typeof(html) != typeof("")) {
-        window.location.href = "../views/index.html";
+        window.location.href = `${viewsDir}/views/index.html`;
     } else {
-        window.location.href = html;
+        window.location.href = `${viewsDir}/${html}`;
     }
 }
 
@@ -16,5 +21,10 @@ function redirect(html) {
  * @param {Object} obj - object 
  */
 function isObjectEmpty(obj) {
-    return (obj == undefined || typeof(obj) != typeof({}) || Object.keys(keys).length == 0);
+    return (obj == undefined || typeof(obj) != typeof({}) || Object.keys(obj).length == 0);
 }
+
+module.exports = {
+    redirect,
+    isObjectEmpty
+};

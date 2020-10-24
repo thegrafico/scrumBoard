@@ -107,6 +107,29 @@ class ScrumDB {
         });
     }
 
+    /**
+     * Get the project id
+     * @param {Number} projectId - id of the project 
+     */
+    getProjectInfoById(projectId) {
+
+        let father = this;
+
+        return new Promise(function(resolve, reject) {
+
+            // verify userid
+            if (!father._verifyParameters([{ var: projectId, type: 'n', canBeNull: false }])) {
+                return reject(errorMsg.BAD_PARAMETER);
+            }
+
+            let getProjectById = 'SELECT * FROM PROJECT WHERE PROJECT.project_id = ?';
+
+            father.db.all(getProjectById, [projectId], function(err, results) {
+                return (err != undefined) ? reject(err) : resolve(results);
+            });
+        });
+    }
+
 
     /**
      * @return {String}- todays date in the following format: month/day/year
@@ -162,8 +185,8 @@ class ScrumDB {
 
             } else { // type number
 
-                if ((objectValue[kname] == undefined) || (typeof(objectValue[kname]) != typeof(1))) {
-                    console.log(`The Parameter ${objectValue[kname]} have an error`);
+                if ((objectValue[kname] == undefined) || (isNaN(objectValue[kname]))) {
+                    console.log(`The Parameter '${objectValue[kname]}' have an error`);
                     return false;
                 }
             }

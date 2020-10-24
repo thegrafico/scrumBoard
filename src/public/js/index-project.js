@@ -1,9 +1,13 @@
 // $('#dynamic-content').load('file:///my-partial.html')
 const { remote } = require("electron");
-const { conn, status, session } = remote.require('./index.js'); // getting the DB connection
+const { conn, status, session, LOG } = remote.require('./index.js'); // getting the DB connection
+const { redirect, isObjectEmpty } = require('../public/js/helper-functions.js');
 
 
 // ================== VARIABLES =========================
+
+const URL_SCRUM_MAIN_PATH = "/views/scrum-main.html";
+
 const boxProjectID = "#box-show-projects";
 const NUMBER_OF_PROJECT_PER_ROW = 3;
 
@@ -38,9 +42,6 @@ let boxCardTemplate = `
     </div>
 </div>`;
 
-const REDIRECT_HTML = 'scrumMain.html';
-
-
 // ====================================================
 
 /**
@@ -57,8 +58,8 @@ function loadModal(filePath) {
  */
 function createProjectHtml(projectObject) {
 
-    // return null if object is empty
-    if (projectObject == undefined || Object.keys(projectObject).length == 0) {
+    if (isObjectEmpty(projectObject)) {
+        LOG.warn(":: createProjectHtml => Object is empty");
         return null;
     }
 
@@ -99,7 +100,11 @@ function getModalInput() {
         { var: pDescription, type: 's', canBeNull: true }
     ];
 
-    if (!conn._verifyParameters(params)) { return undefined };
+    if (!conn._verifyParameters(params)) {
+        // TODO: NOTIFY THE USER THE ERRR
+        LOG.error(":: index-project::getModalInput ==> Invalid parameters for modal");
+        return undefined;
+    };
 
     // since pDescription can be null
     if (pDescription != undefined) pDescription = pDescription.trim()
@@ -120,6 +125,7 @@ async function loadUserProjects() {
     // verify projects
     if (projects == undefined || projects.length == 0) {
         // TODO: NOTIFY THE USER the error
+        LOG.info(":: index-project::loadUserProjects ==> Not projects")
         return;
     }
 
@@ -133,15 +139,11 @@ async function loadUserProjects() {
             status: project["status"]
         });
     });
-
-
 }
 
 
 // LOGIG IS RUN HERE 
 $(document).ready(function() {
-
-    const viewsDir = session.get("projectDir");
 
     // path for modal create
     let createModalPath = '../views/partials/create-modal.html';
@@ -161,14 +163,15 @@ $(document).ready(function() {
         let projectID = await conn.createProject(name, description).catch((error) => {
             // TODO: Notification to the user that there is an error
             console.log("ERROR: ", error);
+            LOG.error(":: index-project::ready ==> Error creating the project: " + error);
         });
 
         if (projectID) {
             createProjectHtml({ id: projectID, title: name, description: description, date: conn._getDate(), status: status.new });
-        } else {
-            // TODO: notify the user the error
-            console.log("Error creating the project");
+            return;
         }
+
+        // TODO: NOTIFY THE USER of error here
     });
 
 
@@ -185,8 +188,7 @@ $(document).ready(function() {
         session.set("currenProjectId", projectId);
 
         // reditect to a page
-        redirect(viewsDir + "/views/scrumMain.html");
-
+        redirect(URL_SCRUM_MAIN_PATH);
     });
 
 });

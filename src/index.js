@@ -2,7 +2,6 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const { mySession } = require('./storage/mySession');
-
 const { db, status } = require('../database/db_handler');
 const conn = new db("scrumDB.sqlite3");
 
@@ -17,6 +16,15 @@ if (require("electron-squirrel-startup")) {
     app.quit();
 }
 
+// create a rolling file logger based on date/time that fires process events
+const opts = {
+    errorEventName: 'error',
+    logDirectory: 'log/', // NOTE: folder must exist and be writable...
+    fileNamePattern: 'roll-<DATE>.log',
+    dateFormat: 'YYYY.MM.DD'
+};
+
+const LOG = require('simple-node-logger').createRollingFileLogger(opts);
 
 // ========= CREATING A USER =========
 // conn.createUser("Raul Pichardo", "raul022107@gmail.com", "xxxxxxx").then((userID) => {
@@ -36,7 +44,7 @@ const createWindow = () => {
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
-        title: "ScrumBoard",
+        title: "Scrum Board",
         webPreferences: {
             nodeIntegration: true,
             worldSafeExecuteJavaScript: true,
@@ -51,6 +59,8 @@ const createWindow = () => {
     //mainWindow.webContents.openDevTools();
 
     mainWindow.maximize();
+
+    LOG.info(":: STARTED APP :: SUCCESS");
 };
 
 // This method will be called when Electron has finished
@@ -79,7 +89,8 @@ module.exports = {
     createWindow,
     conn,
     status,
-    session: sess
+    session: sess,
+    LOG,
 };
 
 // In this file you can include the rest of your app's specific main process

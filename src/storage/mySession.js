@@ -15,7 +15,7 @@ class mySession {
     get(key) {
 
         if (!(key in this._val)) {
-            return "KEY NOT FOUND";
+            return -1;
         }
 
         return this._val[key];
