@@ -12,7 +12,7 @@ const boxProjectID = "#box-show-projects";
 const NUMBER_OF_PROJECT_PER_ROW = 3;
 
 // btn create id
-const BTN_CREATE_MODAL = "#createModal";
+const BTN_CREATE_MODAL = "#createProject";
 
 // inputs from modal to create project
 const modalProjectName = '#pName';
@@ -146,7 +146,7 @@ async function loadUserProjects() {
 $(document).ready(function() {
 
     // path for modal create
-    let createModalPath = '../views/partials/create-modal.html';
+    let createModalPath = '../views/partials/create-project.html';
 
     // load the modal once the document is fully loaded
     loadModal(createModalPath);

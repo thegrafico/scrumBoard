@@ -67,11 +67,12 @@ a:hover {
 .user-row .col a {
     text-align: center;
     color: lemonchiffon;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 .user-row .col a:hover {
     color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
 }
 
 .fa-users {
@@ -86,4 +87,28 @@ a:hover {
     font-weight: normal;
     font-size: 0.9em;
     padding-left: 1%;
+}
+
+.memberCardIcon {
+    font-size: 0.8em;
+    margin-left: 1%;
+}
+
+#createUserTitle i,
+#addUserBtn i {
+    color: seagreen;
+    font-size: 1em;
+    margin-left: 2%;
+}
+
+#removeUserBtn i,
+#removeUserTitle i {
+    color: sienna;
+    font-size: 1em;
+    margin-left: 2%;
+}
+
+.modal-lg,
+.modal-xl {
+    max-width: 90% !important;
 }

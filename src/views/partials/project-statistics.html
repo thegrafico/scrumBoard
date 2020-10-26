@@ -52,24 +52,24 @@
                     <li>
                         <div class="row user-row">
                             <div class="col">
+                                <span> 
+                                    <a href="#" id="addUserBtn" role="button" data-toggle="modal" data-target="#create-user"> Add Member  <i class="fas fa-user-plus memberCardIcon"></i> </a>
+                                    
+                                </span>
+                            </div>
+
+                            <div class="col">
                                 <span>
-                                    <a href="" id="memberPerformances" > Edit Members </a> 
+                                    <a href="" id="removeUserBtn" role="button" data-toggle="modal" data-target="#remove-user" > Remove Members <i class="fas fa-trash memberCardIcon"></i> </a> 
                                 </span>
 
                             </div>
 
                             <div class="col">
                                 <span> 
-                                    <a href="" id="memberPerformances" > Performances </a>
+                                    <a href="#" id="viewPerformancesBtn" > Performances <i class="fas fa-chart-pie memberCardIcon"></i> </a>
                                 </span>
                             </div>
-
-                            <div class="col">
-                                <span> 
-                                    <a href="" id="memberPerformances" > Add Member </a>
-                                </span>
-                            </div>
-
                         </div>
                     </li>
                 </ul>
@@ -88,5 +88,72 @@
                 <p>Sprints plots goes here </p>
             </div>
         </div>
+    </div>
+</div>
+
+
+<!-- MODAL TO CREATE USER -->
+<div class="modal fade" id="create-user" tabindex="-1" role="dialog" aria-labelledby="create-user-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createUserTitle" style="width: 30%;">Add New Member <i class="fas fa-user-plus"></i> </h5> &nbsp; &nbsp;
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span> 
+                </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="userId">User</label>
+                            <input type="text" class="form-control" id="userId" placeholder="Username or email">
+                        </div>
+                    </fieldset>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="btnCancelCreateUser" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="btnCreateUser" type="button" data-dismiss="modal" class="btn btn-success">Send Invite</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL TO DELETE A USER FROM PROJECT -->
+<div class="modal fade" id="remove-user" tabindex="-1" role="dialog" aria-labelledby="remove-user-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeUserTitle" style="width: 30%;">Remove Members <i class="fas fa-trash memberCardIcon"></i> </h5> &nbsp; &nbsp;
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span> 
+                </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="userId">User(s)</label>
+                            <input type="text" class="form-control" id="removeUsersId" placeholder="Username or email">
+                        </div>
+                    </fieldset>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="btnCancelRemoveUser" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="btnRemoveUser" type="button" data-dismiss="modal" class="btn btn-warning"> Remove</button>
+                </div>
+            </form>
+        </div>
+
     </div>
 </div>
