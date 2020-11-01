@@ -6,17 +6,57 @@ const { redirect, isObjectEmpty } = require('../public/js/helper-functions.js');
 
 
 // ==================== VARIABLES =========================
-const PROJECT_STATISTICS = '../views/partials/project-statistics.html';
 const SIDE_BAR = "#sidebarCollapse";
+const DYNAMIC_ID_FOR_TEMPLATE = "dynamicScript";
+const DYNAMIC_CONTAINER = "#content";
 
-const DYNAMIC_SCRIPTS_FOR_TEMPLATE = {
-    "statistics": "../public/js/statistics/statistics-main.js",
-    "planing_backlog": "path",
-    "planing_sprint": "path",
-    "sprint_board": "path",
-    "sprint_task": "path",
-    "queries": "path",
+const DYNAMIC_TEMPLATE_SCRIPTS_FOR_TEMPLATE = {
+    "linkToStatistics": {
+        view: "../views/partials/project-statistics.html",
+        script: "../public/js/statistics/statistics-main.js"
+    },
+    "linkToBacklog": {
+        view: "../views/partials/project-backlog.html",
+        script: null
+    },
+    "linkToSprintPlaning": {
+        view: "../views/partials/project-sprint-planing.html",
+        script: null
+    },
+    "linkToBoard": {
+        view: "../views/partials/project-sprint-board.html",
+        script: null
+    },
+    "linkToMyTask": {
+        view: "../views/partials/project-sprint-my-task.html",
+        script: null
+    },
+    "linkToQueries": {
+        view: "../views/partials/project-queries.html",
+        script: null
+    },
+    "linkToWiki": {
+        view: "../views/partials/project-wiki.html",
+        script: null
+    },
 };
+
+
+// LINKS TO OTHER TEMPLATES
+const linkToStatistics = "linkToStatistics";
+const linkToBacklog = "linkToBacklog";
+const linkToSprintPlaning = "linkToSprintPlaning";
+const linkToBoard = "linkToBoard";
+const linkToMyTask = "linkToMyTask";
+const linkToQueries = "linkToQueries";
+const linkToWiki = "linkToWiki";
+
+// default template
+let ACTIVE_TEMPLATE = linkToStatistics;
+
+// change template btn
+const CHANGE_TEMPLATE_BTN = ".urlBtn";
+
 
 // ==================== FUNTION DEFITIONS =========================
 
@@ -35,33 +75,72 @@ function fullHeight() {
  * Load dynamic js depending the template loaded
  * @param {String} templateName - name of the template {statistics, board, sprint}
  */
-function loadScriptForTemplate(templateName) {
-
-    LOG.info(":: scrum-main::loadScriptForTemplate ==> loading dynamic script");
-
-    // if the template name is not in the object, load the default
-    if (!(templateName in DYNAMIC_SCRIPTS_FOR_TEMPLATE)) {
-        // TODO: notify the user
-        LOG.error(":: scrum-main::loadScriptForTemplate ==> Invalid template name");
+function loadScriptForTemplate(script) {
+    if (!script) {
         return;
     }
 
+    LOG.info(":: scrum-main::loadScriptForTemplate ==> loading dynamic script");
+
     // loading the scrit dynamically
     let myScriptHtml = document.createElement("script");
-    myScriptHtml.setAttribute("src", DYNAMIC_SCRIPTS_FOR_TEMPLATE[templateName]);
-    document.body.appendChild(myScriptHtml);
+
+    // setting scripts
+    myScriptHtml.setAttribute("src", script);
+    myScriptHtml.setAttribute("id", DYNAMIC_ID_FOR_TEMPLATE);
+
+    try {
+        document.body.appendChild(myScriptHtml);
+    } catch (error) {
+        LOG.error(":: scrum-main::loadScriptForTemplate ==> Error loading the dynamic script: " + error);
+    }
+
+    LOG.info(":: scrum-main::loadScriptForTemplate ==> Dynamic tab was loaded");
 }
 
 /**
- * load the modal dynamically
- * @param {String} filePath 
+ * Remove the dynamic template and script from the template
  */
-function loadModal(filePath) {
-    $("#content").load(filePath, function() {
-        //loadProjectStatus();
-        let templateName = Object.keys(DYNAMIC_SCRIPTS_FOR_TEMPLATE);
+function clearTemplate() {
 
-        loadScriptForTemplate(templateName[0]);
+    LOG.info(":: scrum-main::clearTemplate ==> Started removing template");
+
+    // empty html
+    if ($(DYNAMIC_CONTAINER).length) {
+        $(DYNAMIC_CONTAINER).empty();
+    }
+
+    // remove script from html
+    if ($(`#${DYNAMIC_ID_FOR_TEMPLATE}`).length) {
+        // removing script from html
+        $(`#${DYNAMIC_ID_FOR_TEMPLATE}`).remove();
+    }
+
+    // remove script from html
+    if ($(DYNAMIC_ID_FOR_TEMPLATE).length) {
+        // removing script from html
+        $(DYNAMIC_ID_FOR_TEMPLATE).remove();
+    }
+
+    LOG.info(":: scrum-main::clearTemplate ==> Finished removing template");
+}
+
+
+/**
+ * load the modal dynamically
+ * @param {String} url - template name
+ */
+function loadModal(url) {
+
+    let view = DYNAMIC_TEMPLATE_SCRIPTS_FOR_TEMPLATE[url]["view"];
+    let script = DYNAMIC_TEMPLATE_SCRIPTS_FOR_TEMPLATE[url]["script"];
+
+    // load the container info
+    $(DYNAMIC_CONTAINER).load(view, function() {
+
+        if (script != null) {
+            // loadScriptForTemplate(script);
+        }
     });
 }
 
@@ -74,7 +153,30 @@ $(document).ready(async function() {
     fullHeight();
 
     // load statistic modal since is the default one
-    loadModal(PROJECT_STATISTICS);
+    loadModal(ACTIVE_TEMPLATE);
+
+    // ============== LOAD DYNAMIC ================
+
+    // change the template
+    $(CHANGE_TEMPLATE_BTN).on("click", function() {
+
+        let templateId = $(this).attr('id');
+
+        // clean only if not is the active template 
+        if (ACTIVE_TEMPLATE != templateId) {
+
+            console.log("Cleaning template");
+            clearTemplate();
+
+            console.log("Loading template");
+            loadModal(templateId);
+
+            ACTIVE_TEMPLATE = templateId;
+        }
+    });
+
+
+    // ============================================
 
     // TOGGLE THE SIDEVAR 
     $(SIDE_BAR).on('click', function() {

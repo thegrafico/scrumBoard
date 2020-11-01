@@ -13,6 +13,9 @@ const tagBtnToggleStatus = "#btnToggleStatus";
 const tagStartDate = "#startDate";
 const tagCurrentSprint = '#currentSprint';
 
+const PROJECT_STATISTICS = '../views/partials/project-statistics.html';
+
+
 // ==================== FUNTION DEFITIONS =========================
 
 /**
@@ -146,9 +149,4 @@ $(document).ready(async function() {
     loadProjectToHtml(projectInfo);
 
     // ====================================================
-
-    // TOGGLE THE SIDEVAR 
-    $('#sidebarCollapse').on('click', function() {
-        $('#sidebar').toggleClass('active');
-    });
 });
