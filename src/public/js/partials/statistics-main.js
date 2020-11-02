@@ -1,6 +1,6 @@
 // ==================== VARIABLES =========================
 
-const ADD_USER_BTN = "#addUserBtn";
+// const ADD_USER_BTN = "#addUserBtn";
 const REMOVE_USER_BTN = "#removeUserBtn";
 const VIEW_PERFORMANCE_BTN = "#viewPerformancesBtn";
 
@@ -75,7 +75,7 @@ function loadProjectToHtml(project) {
  * load the modal dynamically
  * @param {String} filePath 
  */
-function loadModal(filePath) {
+function statistics_load_model(filePath) {
     $("#content").load(filePath, function() {
         loadProjectStatus();
     });
@@ -117,7 +117,7 @@ function changeProjectStatus() {
 $(document).ready(async function() {
 
     // load statistic modal since is the default one
-    loadModal(PROJECT_STATISTICS);
+    statistics_load_model(PROJECT_STATISTICS);
 
     // change the status of the project
     changeProjectStatus();
@@ -143,7 +143,7 @@ $(document).ready(async function() {
         redirect(); // default redirect 
     }
 
-    // console.log(projectInfo);
+    // console.log("Project info: ", projectInfo);
 
     // load the project info to html
     loadProjectToHtml(projectInfo);

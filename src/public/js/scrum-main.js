@@ -13,11 +13,11 @@ const DYNAMIC_CONTAINER = "#content";
 const DYNAMIC_TEMPLATE_SCRIPTS_FOR_TEMPLATE = {
     "linkToStatistics": {
         view: "../views/partials/project-statistics.html",
-        script: "../public/js/statistics/statistics-main.js"
+        script: "../public/js/partials/statistics-main.js"
     },
     "linkToBacklog": {
         view: "../views/partials/project-backlog.html",
-        script: null
+        script: "../public/js/partials/board-main.js"
     },
     "linkToSprintPlaning": {
         view: "../views/partials/project-sprint-planing.html",
@@ -76,6 +76,9 @@ function fullHeight() {
  * @param {String} templateName - name of the template {statistics, board, sprint}
  */
 function loadScriptForTemplate(script) {
+
+    console.log("The scripts is: ", script);
+
     if (!script) {
         return;
     }
@@ -95,7 +98,7 @@ function loadScriptForTemplate(script) {
         LOG.error(":: scrum-main::loadScriptForTemplate ==> Error loading the dynamic script: " + error);
     }
 
-    LOG.info(":: scrum-main::loadScriptForTemplate ==> Dynamic tab was loaded");
+    // LOG.info(":: scrum-main::loadScriptForTemplate ==> Dynamic tab was loaded");
 }
 
 /**
@@ -112,17 +115,13 @@ function clearTemplate() {
 
     // remove script from html
     if ($(`#${DYNAMIC_ID_FOR_TEMPLATE}`).length) {
+        console.log("Removing script...");
         // removing script from html
         $(`#${DYNAMIC_ID_FOR_TEMPLATE}`).remove();
     }
-
-    // remove script from html
-    if ($(DYNAMIC_ID_FOR_TEMPLATE).length) {
-        // removing script from html
-        $(DYNAMIC_ID_FOR_TEMPLATE).remove();
-    }
-
     LOG.info(":: scrum-main::clearTemplate ==> Finished removing template");
+
+    console.log("Template cleaned");
 }
 
 
@@ -138,10 +137,14 @@ function loadModal(url) {
     // load the container info
     $(DYNAMIC_CONTAINER).load(view, function() {
 
+        console.log("THE VIEW TO BE LOADED IS: ", view)
+
         if (script != null) {
-            // loadScriptForTemplate(script);
+            loadScriptForTemplate(script);
         }
     });
+
+    console.log("Template Loaded")
 }
 
 // ================================================================
@@ -165,10 +168,8 @@ $(document).ready(async function() {
         // clean only if not is the active template 
         if (ACTIVE_TEMPLATE != templateId) {
 
-            console.log("Cleaning template");
             clearTemplate();
 
-            console.log("Loading template");
             loadModal(templateId);
 
             ACTIVE_TEMPLATE = templateId;
