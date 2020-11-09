@@ -131,8 +131,12 @@ function clearTemplate() {
  * @param {String} url - template name
  */
 function loadModal(url) {
+
+	// get the view to be loaded
   let view = DYNAMIC_TEMPLATE_SCRIPTS_FOR_TEMPLATE[url]["view"];
-  let script = DYNAMIC_TEMPLATE_SCRIPTS_FOR_TEMPLATE[url]["script"];
+	
+	// get the dynamic script to be loaded
+	let script = DYNAMIC_TEMPLATE_SCRIPTS_FOR_TEMPLATE[url]["script"];
 
   // load the container info
   $(DYNAMIC_CONTAINER).load(view, function () {
@@ -144,13 +148,22 @@ function loadModal(url) {
 }
 
 /**
- * 
- * @param {String} id_ - id of the class 
+ * This function is called from the dynamic loaded classes
+ * Return the project id
+ * @returns {Number} - id of the project
  */
-function getCurrentClass(url){
-	switch(id){
+function getProjectId() {
+  // get the projetId
+  let projectId = session.get("currenProjectId");
 
-	}
+  // redirect if there is not project
+  if (projectId == -1) {
+		LOG.error("scrum-main.js::getProjectId --> Invalid Project ID");
+    redirect();
+    return;
+  }
+
+  return projectId;
 }
 
 // ================================================================
@@ -166,15 +179,16 @@ $(document).ready(async function () {
 
   // change the template
   $(CHANGE_TEMPLATE_BTN).on("click", function () {
-    let templateId = $(this).attr("id");
-
+		let templateId = $(this).attr("id");		
+		
     // clean only if not is the active template
     if (ACTIVE_TEMPLATE != templateId) {
       clearTemplate();
 
       loadModal(templateId);
 
-      ACTIVE_TEMPLATE = templateId;
+			ACTIVE_TEMPLATE = templateId;
+			LOG.info("EVENT::CHANGE_TEMPLATE_BTN --> Changed view to " + templateId);
     }
   });
 
@@ -183,5 +197,7 @@ $(document).ready(async function () {
   // TOGGLE THE SIDEVAR
   $(SIDE_BAR).on("click", function () {
     $("#sidebar").toggleClass("active");
-  });
+	});
+
+	
 });

@@ -1,19 +1,3 @@
-// // ==================== VARIABLES =========================
-// // const ADD_USER_BTN = "#addUserBtn";
-// const REMOVE_USER_BTN = "#removeUserBtn";
-// const VIEW_PERFORMANCE_BTN = "#viewPerformancesBtn";
-
-// // tags for the card project
-// const tagProjectName = "#projectName";
-// const tagOwnerName = "#ownerName";
-// const tagStatusList = "#statusMenu";
-// const tagCurrentStatus = "#currentStatus";
-// const tagBtnToggleStatus = "#btnToggleStatus";
-// const tagStartDate = "#startDate";
-// const tagCurrentSprint = "#currentSprint";
-
-// const PROJECT_STATISTICS = "../views/partials/project-statistics.html";
-
 // // ==================== FUNTION DEFITIONS =========================
 
 // /**
@@ -44,22 +28,6 @@
 // }
 
 // /**
-//  * Return the project id
-//  */
-// function getProjectId() {
-//   // get the projetId
-//   let projectId = session.get("currenProjectId");
-
-//   // redirect if there is not project
-//   if (projectId == -1) {
-//     redirect();
-//     return;
-//   }
-
-//   return projectId;
-// }
-
-// /**
 //  * Load the project to the html
 //  * @param {Object} project - project data
 //  */
@@ -82,21 +50,6 @@
 // }
 
 // /**
-//  * Load the status of the project
-//  */
-// function loadProjectStatus() {
-//   $(tagCurrentStatus).text(status.project_status[0]);
-
-//   for (indx in status.project_status) {
-//     let mStatus = status.project_status[indx];
-
-//     $(tagStatusList).append(
-//       `<li>  <a class='status-item' href='#'>${mStatus}</a>  </li>`
-//     );
-//   }
-// }
-
-// /**
 //  * Change the status of the project
 //  */
 // function changeProjectStatus() {
@@ -115,8 +68,41 @@
 
 $(document).ready(async function () {
 
-    CURRENT_CLASS = new Statistics();
+    LOG.info("Dynamic script::statustucs-main.js was loaded");
     
+    // init a new class Statistics base
+    CURRENT_CLASS = new Statistics(conn, getProjectId());
+    
+    // load the project status
+    if (!CURRENT_CLASS.loadProjectToHtml(status)){
+        LOG.error("statistcs-main.js:: error loading the project status");
+        rediret();
+    }
+
+
+
+    // event to change the status of the project
+    $("body").on("click", CURRENT_CLASS.getBtnId("statusItem"), function(){
+        
+        // add to record, so we can remove it later 
+        CURRENT_CLASS.addEvent('click', CURRENT_CLASS.getBtnId("statusItem"));
+
+        // get the status the user click
+        let clickedStatus = $(this).text();
+
+        // change the main status
+        $(CURRENT_CLASS.getTagId("currentStatus")).text(clickedStatus);
+
+        // close the UI element
+        $(CURRENT_CLASS.getBtnId("toggleStatus")).click();
+
+        // logging the message
+        LOG.info("statistics-main.js:: status changed");
+
+
+        // TODO: enable button to save the current status to the database
+    });
+
 //   // load statistic modal since is the default one
 //   statistics_load_model(PROJECT_STATISTICS);
 
