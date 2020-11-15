@@ -1,5 +1,4 @@
 class Statistics {
-
   static VIEW_PATH = "../views/partials/project-statistics.html";
 
   #buttosId = {
@@ -17,7 +16,10 @@ class Statistics {
     currentStatus: "#currentStatus",
     startDate: "#startDate",
     currentSprint: "#currentSprint",
+    projectDescription: "#projectDescription"
   };
+
+  #project = undefined;
 
   #EVENTS = {};
 
@@ -38,48 +40,74 @@ class Statistics {
     this.conn = conn;
     this.projectId = projectId;
   }
+
   /**
    * Get the project information
    * @returns {Promise} - with project info object
    */
-  getProjectInfo() {
+  #getProjectInfo() {
+    let projectId = this.projectId;
     return new Promise(async function (resolve, reject) {
-      let project = await conn
-        .getProjectInfoById(this.projectId)
-        .catch((error) => {
-          LOG.error(
-            ":: scrum-main::getProjectInfo ==> Error getting the project from the db: " +
-              error
-          );
-          reject(error);
-        });
+      let project = await conn.getProjectInfoById(projectId).catch((error) => {
+        LOG.error(
+          ":: ClassMain.js::getProjectInfo ==> Error getting the project from the db: " +
+            error
+        );
+        reject(error);
+      });
 
       resolve(project[0]);
     });
   }
+
   /**
    * Load statistical model to html
    * @param {Status} - all available status
    * @returns {Boolean} - true if the project was successfully loaded
    */
-  loadProjectToHtml(status) {
+  async loadProjectToHtml(status) {
 
-    if (status == undefined || status.project_status == undefined) { return false;}
+    if (status == undefined || status.project_status == undefined) {
+      return false;
+    }
+
+    // loading project info
+    this.#project = await this.#getProjectInfo(this.projectId).catch((err) => {
+      console.log("Error getting the project information");
+      LOG.error(":: ClassMain.js::Constructor ==> error getting  project info: " + err);
+    });
 
     let projectStatus = status.project_status;
-    
-    // set the default status 
+
+    // ===============================  Status div =====================================
+    // set the default status
     $(this.#tagsId["currentStatus"]).text(projectStatus[0]);
-    
+
+    // list element
+    let list = this.#tagsId["statusList"];
+
+    // getting the button id
     let btnClass = this.#buttosId["statusItem"];
+
+    // remove the first string since we are getting the class Ex. (.status => status)
     btnClass = btnClass.substring(1);
-    
+
     // load the list of the status
     projectStatus.forEach(function (item) {
-      $(Father.#tagsId["statusList"]).append(
+      $(list).append(
         `<li>  <a class='${btnClass}' role="button" href='#'>${item}</a>  </li>`
       );
     });
+    // =========================================================================
+  
+    if (this.#project){
+      // TODO: get the user name using sessions && get current Sprint
+      $(this.getTagId("ownerName")).text("Raul Pichardo");
+      $(this.getTagId("currentSprint")).text("Sprint 1");
+      $(this.getTagId("projectName")).text(this.#project["name"]);
+      $(this.getTagId("startDate")).text(this.#project["date_created"]);
+      $(this.getTagId("projectDescription")).text(this.#project["description"]);
+    }
 
     return true;
   }
@@ -112,16 +140,30 @@ class Statistics {
 
   /**
    * Store add event so it can be removed later when class is removed
-   * @param {String} event - event to add - click, change, load 
-   * @param {String} element - element to add to event 
+   *  Ex: {"class": "click"}
+   * @param {String} eventType - event to add - click, change, load
+   * @param {String} element - element to add to event
    */
-  addEvent(event, element){
-
+  addEvent(eventType, element) {
     // early exit condition
-    if (!event || !element) {return;}
-    
+    if (!eventType || !element) {
+      return;
+    }
+
     // add listener to EVENT object
-    this.#EVENTS[event] = element;
+    this.#EVENTS[element] = eventType;
+  }
+
+  /**
+   * This function should be available in all clases. TODO: inherance
+   */
+  unload(){
+    let events = this.#EVENTS;
+    
+    for (let key in events){
+      $("body").off(events[key], key);
+    }
+  
   }
 }
 

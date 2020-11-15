@@ -123,7 +123,17 @@ function clearTemplate() {
     // removing script from html
     $(`#${DYNAMIC_ID_FOR_TEMPLATE}`).remove();
   }
-  LOG.info(":: scrum-main::clearTemplate ==> Finished removing template");
+
+  if (CURRENT_CLASS != undefined){
+
+    CURRENT_CLASS.unload();      
+    LOG.info(": scrum-main::clearTemplate ==>  Class was sucessfully removed");
+    delete CURRENT_CLASS;
+    // CURRENT_CLASS = undefined;  
+  }else {
+    LOG.error(": scrum-main::clearTemplate ==> Error unloading the class");
+  }
+  LOG.info(":: scrum-main.js::clearTemplate ==> Finished removing template");
 }
 
 /**
@@ -169,6 +179,7 @@ function getProjectId() {
 // ================================================================
 
 $(document).ready(async function () {
+  
   // set the side var to full heigth
   fullHeight();
 
@@ -179,11 +190,15 @@ $(document).ready(async function () {
 
   // change the template
   $(CHANGE_TEMPLATE_BTN).on("click", function () {
-		let templateId = $(this).attr("id");		
+    
+    // getting the template to load
+    let templateId = $(this).attr("id");		
 		
     // clean only if not is the active template
     if (ACTIVE_TEMPLATE != templateId) {
-      clearTemplate();
+      
+      // clean the class and remove all events listener
+      clearTemplate();        
 
       loadModal(templateId);
 
