@@ -130,6 +130,26 @@ class ScrumDB {
         });
     }
 
+    /**
+     * get the member information of a project
+     * @param {Number} projectId 
+     * @returns {Promise} member information for the project
+     */
+    getMemberInformation(projectId){
+        let father = this;
+
+        return new Promise(function(resolve, reject){
+            // verify userid
+            if (!father._verifyParameters([{ var: projectId, type: 'n', canBeNull: false }])) {
+                return reject(errorMsg.BAD_PARAMETER);
+            }
+
+            let getMemberInfo = 'SELECT * FROM PROJECT_USER WHERE PROJECT_USER.project_id = ?';
+            father.db.all(getMemberInfo, [projectId], function(err, results){
+                return (err != undefined) ? reject(err) : resolve(results);
+            });
+        });
+    }
 
     /**
      * @return {String}- todays date in the following format: month/day/year

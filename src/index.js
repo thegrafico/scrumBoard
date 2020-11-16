@@ -37,7 +37,7 @@ const LOG = require('simple-node-logger').createRollingFileLogger(opts);
 
 const createWindow = () => {
 
-    sess.set("user", "Raul");
+    sess.set("user", "Raul Pichardo");
     sess.set("projectDir", __dirname);
 
     // Create the browser window.

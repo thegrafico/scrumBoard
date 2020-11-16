@@ -2,8 +2,10 @@ class Statistics {
   static VIEW_PATH = "../views/partials/project-statistics.html";
 
   #buttosId = {
-    addUser: "#addUserBtn",
-    removeUser: "#removeUserBtn",
+    addUser: "#btnAddUser",
+    cancelAddUser: "#btnCancelUser",
+    removeUser: "#btnRemoveUser",
+    cancelRemoveUser: "#btnCancelRemoveUser",
     viewPerformance: "#viewPerformancesBtn",
     statusItem: ".status-item",
     toggleStatus: "#btnToggleStatus",
@@ -16,11 +18,16 @@ class Statistics {
     currentStatus: "#currentStatus",
     startDate: "#startDate",
     currentSprint: "#currentSprint",
-    projectDescription: "#projectDescription"
+    projectDescription: "#projectDescription",
+    NumberOfMembers: "#NumberOfMembers",
+    inputUserNameOrEmail: "#usernameOrEmail",
+    inputRemoveUser: "#removeUsersNameOrEmails"
   };
 
+  // store all project information in a object
   #project = undefined;
 
+  // all events should be stored here, so its more easy remove then when this class is deleted
   #EVENTS = {};
 
   /**
@@ -28,7 +35,7 @@ class Statistics {
    * @param {Object} conn - database connection
    * @param {Number} projectId - id of the project
    */
-  constructor(conn, projectId) {
+  constructor(conn, projectId, username = undefined) {
     if (projectId == undefined || isNaN(projectId) || projectId == -1) {
       throw "Invalid Project Id";
     }
@@ -37,8 +44,28 @@ class Statistics {
       throw "Invalid Connection for Stastistics";
     }
 
+    this.username = username;
     this.conn = conn;
     this.projectId = projectId;
+  }
+
+  /**
+   * send an invite user to project
+   * @param {String} usernameOrEmail 
+   * @returns {Promise} - true if the user was added
+   */
+  inviteUserToProject(usernameOrEmail){
+    return new Promise(function(resolve, reject){
+      if (!usernameOrEmail == undefined || !usernameOrEmail.length) return reject("Invalid username or email");
+
+      // is email
+      if (usernameOrEmail.includes("@")){
+        
+      // is username
+      }else{
+
+      }
+    });
   }
 
   /**
@@ -66,16 +93,38 @@ class Statistics {
    * @returns {Boolean} - true if the project was successfully loaded
    */
   async loadProjectToHtml(status) {
-
     if (status == undefined || status.project_status == undefined) {
       return false;
     }
 
     // loading project info
     this.#project = await this.#getProjectInfo(this.projectId).catch((err) => {
-      console.log("Error getting the project information");
-      LOG.error(":: ClassMain.js::Constructor ==> error getting  project info: " + err);
+      LOG.error(
+        ":: ClassMain.js::loadProjectToHtml ==> error getting  project info: " +
+          err
+      );
     });
+
+    // get the information for the div car: members
+    let memberInformation = await this.#getMemberInformation().catch((err) => {
+      LOG.error(
+        ":: ClassMain.js::loadProjectToHtml ==> error getting  member info: " +
+          err
+      );
+    });
+
+    if (memberInformation != undefined){
+      let numberOfUserInProject = Object.keys(memberInformation).length;
+      let message = '';
+      // if there is not element inside the object
+      if (!numberOfUserInProject){
+        message = "You don't have any member yet.";
+      }else{
+        message = `${numberOfUserInProject} members`;
+      }
+
+      $(this.#tagsId["NumberOfMembers"]).text(message);
+    }
 
     let projectStatus = status.project_status;
 
@@ -99,10 +148,10 @@ class Statistics {
       );
     });
     // =========================================================================
-  
-    if (this.#project){
+
+    if (this.#project) {
       // TODO: get the user name using sessions && get current Sprint
-      $(this.getTagId("ownerName")).text("Raul Pichardo");
+      $(this.getTagId("ownerName")).text(this.username);
       $(this.getTagId("currentSprint")).text("Sprint 1");
       $(this.getTagId("projectName")).text(this.#project["name"]);
       $(this.getTagId("startDate")).text(this.#project["date_created"]);
@@ -110,6 +159,32 @@ class Statistics {
     }
 
     return true;
+  }
+  /**
+   * Get the member information
+   * @returns {Object}
+   */
+  #getMemberInformation() {
+    let projectId = this.projectId;
+
+    return new Promise(async function (resolve, reject) {
+      let memberInfo = await conn
+        .getMemberInformation(projectId)
+        .catch((error) => {
+          LOG.error(
+            ":: ClassMain.js::getProjectInfo ==> Error getting the member information from the db: " +
+              error
+          );
+          reject(error);
+        });
+
+      // verify is empty
+      if (!memberInfo.length) {
+        resolve({});
+      }
+
+      resolve(memberInfo[0]);
+    });
   }
 
   /**
@@ -157,13 +232,12 @@ class Statistics {
   /**
    * This function should be available in all clases. TODO: inherance
    */
-  unload(){
+  unload() {
     let events = this.#EVENTS;
-    
-    for (let key in events){
+
+    for (let key in events) {
       $("body").off(events[key], key);
     }
-  
   }
 }
 

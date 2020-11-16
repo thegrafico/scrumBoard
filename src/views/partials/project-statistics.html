@@ -54,7 +54,6 @@
                             <div class="col">
                                 <span> 
                                     <a href="#" id="addUserBtn" role="button" data-toggle="modal" data-target="#create-user"> Add Member  <i class="fas fa-user-plus memberCardIcon"></i> </a>
-                                    
                                 </span>
                             </div>
 
@@ -109,16 +108,19 @@
 
                     <fieldset>
                         <div class="form-group">
-                            <label for="userId">User</label>
-                            <input type="text" class="form-control" id="userId" placeholder="Username or email">
+                            <label for="usernameOrEmail">User</label>
+                            <input type="text" class="form-control" id="usernameOrEmail" placeholder="Username or email">
                         </div>
+                        <span class="text-danger" id="createUserErrorMessage"></span>
                     </fieldset>
 
                 </div>
+
                 <div class="modal-footer">
-                    <button type="btnCancelCreateUser" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button id="btnCreateUser" type="button" data-dismiss="modal" class="btn btn-success">Send Invite</button>
+                    <button type="btnCancelUser" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="btnAddUser" type="button" class="btn btn-success">Send Invite</button>
                 </div>
+
             </form>
         </div>
 
@@ -142,9 +144,11 @@
 
                     <fieldset>
                         <div class="form-group">
-                            <label for="userId">User(s)</label>
-                            <input type="text" class="form-control" id="removeUsersId" placeholder="Username or email">
+                            <label for="removeUsersNameOrEmails">User(s)</label>
+                            <input type="text" class="form-control" id="removeUsersNameOrEmails" placeholder="Username or email">
                         </div>
+                        <span class="text-danger" id="removeUserErrorMessage"></span>
+
                     </fieldset>
 
                 </div>

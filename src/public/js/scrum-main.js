@@ -11,6 +11,7 @@ const DYNAMIC_ID_FOR_TEMPLATE = "dynamicScript";
 const DYNAMIC_CONTAINER = "#content";
 
 let CURRENT_CLASS = undefined;
+const USER_NAME = session.get("user");
 
 const DYNAMIC_TEMPLATE_SCRIPTS_FOR_TEMPLATE = {
   linkToStatistics: {
@@ -127,11 +128,11 @@ function clearTemplate() {
   if (CURRENT_CLASS != undefined){
 
     CURRENT_CLASS.unload();      
-    LOG.info(": scrum-main::clearTemplate ==>  Class was sucessfully removed");
+    LOG.info(":: scrum-main::clearTemplate ==>  Class was sucessfully removed");
     delete CURRENT_CLASS;
     // CURRENT_CLASS = undefined;  
   }else {
-    LOG.error(": scrum-main::clearTemplate ==> Error unloading the class");
+    LOG.error(":: scrum-main::clearTemplate ==> Error unloading the class");
   }
   LOG.info(":: scrum-main.js::clearTemplate ==> Finished removing template");
 }
@@ -203,7 +204,7 @@ $(document).ready(async function () {
       loadModal(templateId);
 
 			ACTIVE_TEMPLATE = templateId;
-			LOG.info("EVENT::CHANGE_TEMPLATE_BTN --> Changed view to " + templateId);
+			LOG.info(":: EVENT::CHANGE_TEMPLATE_BTN --> Changed view to " + templateId);
     }
   });
 
@@ -213,6 +214,4 @@ $(document).ready(async function () {
   $(SIDE_BAR).on("click", function () {
     $("#sidebar").toggleClass("active");
 	});
-
-	
 });

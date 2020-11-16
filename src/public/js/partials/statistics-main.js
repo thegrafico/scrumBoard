@@ -8,7 +8,7 @@ $(document).ready(async function () {
   LOG.info("Dynamic script::statustucs-main.js was loaded");
 
   // init a new class Statistics base
-  CURRENT_CLASS = new Statistics(conn, getProjectId());
+  CURRENT_CLASS = new Statistics(conn, getProjectId(), USER_NAME);
 
   // load the project status
   if (!CURRENT_CLASS.loadProjectToHtml(status)) {
@@ -16,6 +16,7 @@ $(document).ready(async function () {
     rediret();
   }
 
+  // ================ CHANGE THE STATUS ===============
   // add to record, so we can remove it later
   CURRENT_CLASS.addEvent("click", CURRENT_CLASS.getBtnId("statusItem"));
   // event to change the status of the project
@@ -33,5 +34,47 @@ $(document).ready(async function () {
     LOG.info("statistics-main.js:: status changed");
 
     // TODO: enable button to save the current status to the database
+  });
+
+  // ================ ADD USER =================
+  // add to record, so we can remove it later
+  CURRENT_CLASS.addEvent("click", CURRENT_CLASS.getBtnId("addUser"));
+  $("body").on("click", CURRENT_CLASS.getBtnId("addUser"), async function () {
+    
+    // get user input
+    let userNameOrEmail = $(CURRENT_CLASS.getTagId("inputUserNameOrEmail")).val();
+
+    // verify if the user name is empty
+    if (userNameOrEmail == undefined || !userNameOrEmail.length){
+      
+      $("#createUserErrorMessage").show();
+      $("#createUserErrorMessage").text("Invalid input, Try again.");
+    
+    }else{
+
+      // add the user
+      let userWasAdded = await CURRENT_CLASS.inviteUserToProject(userNameOrEmail).catch(err => {
+
+      });
+
+      $("#createUserErrorMessage").hide();
+      $("#createUserErrorMessage").text('');
+      $("#create-user").modal('hide');
+    }
+  });
+
+
+  // ================= clean up the modals =========================
+
+  // ===== CREATE USER
+  $('#create-user').on("show.bs.modal", function(){
+    $(CURRENT_CLASS.getTagId("inputUserNameOrEmail")).val('');
+    $("#createUserErrorMessage").text('');
+  });
+
+  // ===== REMOVE USER
+  $('#remove-user').on("show.bs.modal", function(){
+    $(CURRENT_CLASS.getTagId("inputRemoveUser")).val('');
+    $("#removeUserErrorMessage").text('');
   });
 });
