@@ -68,7 +68,6 @@ class Statistics {
       
       // if invite was sent resolve with true
       (inviteWasSent) ? resolve(true) : reject(false);
-
     });
   }
 
@@ -116,9 +115,10 @@ class Statistics {
           err
       );
     });
-
+    
+    // add member information
     if (memberInformation != undefined){
-      let numberOfUserInProject = Object.keys(memberInformation).length;
+      let numberOfUserInProject = memberInformation.length;
       let message = '';
       // if there is not element inside the object
       if (!numberOfUserInProject){
@@ -187,7 +187,7 @@ class Statistics {
         resolve({});
       }
 
-      resolve(memberInfo[0]);
+      resolve(memberInfo);
     });
   }
 

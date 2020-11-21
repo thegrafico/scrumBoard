@@ -76,12 +76,14 @@ $(document).ready(async function () {
   // ================= clean up the modals =========================
 
   // ===== CREATE USER
+  CURRENT_CLASS.addEvent("show.bs.modal", "#create-user");
   $('#create-user').on("show.bs.modal", function(){
     $(CURRENT_CLASS.getTagId("inputUserNameOrEmail")).val('');
     $("#createUserErrorMessage").text('');
   });
 
   // ===== REMOVE USER
+  CURRENT_CLASS.addEvent("show.bs.modal", '#remove-user');
   $('#remove-user').on("show.bs.modal", function(){
     $(CURRENT_CLASS.getTagId("inputRemoveUser")).val('');
     $("#removeUserErrorMessage").text('');
