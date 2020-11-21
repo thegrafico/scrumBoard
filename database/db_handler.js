@@ -86,7 +86,27 @@ class ScrumDB {
     }
 
     /**
-     * 
+     * get user id by user email
+     * @param {String} email - email of the user
+     */
+    getUserIdByEmail(email){
+        let father = this;
+
+        return new Promise(function(resolve, reject){
+
+            if (!father._verifyParameters({ var: email, type: 's', canBeNull: false },))
+                return reject(errorMsg.BAD_PARAMETER);
+            
+            let getUserId = 'SELECT user_id FROM USER WHERE USER.email = ?';
+
+            father.db.all(getUserId, [email], function(err, result){
+                (err != undefined) ? reject(err) : resolve(result);
+            });
+        });
+    }
+
+    /**
+     * get project information by user id
      * @param {Number} userId - id of the user 
      */
     getProjectsByUser(userId = USERID) {
@@ -213,6 +233,39 @@ class ScrumDB {
         }
 
         return true;
+    }
+
+    /**
+     * send invitation to user to belong to a project 
+     * @param {String} email - user email is isEmail is true, otherwise username
+     */
+    inviteUserToProject(email, projectId){
+        let father = this;
+
+        return new Promise(async function(resolve, reject){
+            
+            // verify userid
+            if (!father._verifyParameters([{ var: email, type: 's', canBeNull: false }])) {
+                return reject(errorMsg.BAD_PARAMETER);
+            }
+
+            let errorMessage = undefined;
+            
+            let userId = await father.getUserIdByEmail(email).catch(err => {
+                errorMessage = err;
+            });
+
+            console.log("USER ID: ", userId);
+            console.log("Error Message ", errorMessage);
+
+            if (!userId) return reject(errorMsg.USER_NOT_FOUND);
+
+            let sendInviteToUser = 'INSERT INTO PROJECT_USER_INVITATION(project_id, user_id, date_invitation_was_sent) VALUES (?, ?, ?)';
+
+            father.db.all(sendInviteToUser, [projectId, userId, father._getDate()], function(err, results){
+                (err != undefined) ? reject(err) : resolve(results);
+            });
+        });
     }
 
 }
