@@ -42,10 +42,10 @@ $(document).ready(async function () {
   $("body").on("click", CURRENT_CLASS.getBtnId("addUser"), async function () {
     
     // get user input
-    let userNameOrEmail = $(CURRENT_CLASS.getTagId("inputUserNameOrEmail")).val();
+    let userEmail = $(CURRENT_CLASS.getTagId("inputUserNameOrEmail")).val();
 
     // verify if the user name is empty
-    if (userNameOrEmail == undefined || !userNameOrEmail.length){
+    if (userEmail == undefined || !userEmail.length || !userEmail.includes("@")){
       
       $("#createUserErrorMessage").show();
       $("#createUserErrorMessage").text("Invalid input, Try again.");
@@ -53,16 +53,25 @@ $(document).ready(async function () {
     }else{
 
       // add the user
-      let userWasAdded = await CURRENT_CLASS.inviteUserToProject(userNameOrEmail).catch(err => {
-
+      let inviteWasSent = await CURRENT_CLASS.inviteUserToProject(userEmail).catch(err => {
+        console.log("Error adding user: ", err);
       });
+
+      // TODO: messase to user 
+      if (inviteWasSent == undefined){LOG.error(":: statistics-main.js :: Error adding the user");}
+
+      
+      if (inviteWasSent) {
+        console.log("Invite sent");
+      }else{
+        console.log("Error sending the invite");
+      }
 
       $("#createUserErrorMessage").hide();
       $("#createUserErrorMessage").text('');
       $("#create-user").modal('hide');
     }
   });
-
 
   // ================= clean up the modals =========================
 

@@ -1,5 +1,5 @@
 var sqlite3 = require('sqlite3').verbose();
-const errorMsg = require('../src/public/js/error-code');
+const errorMsg = require('../src/public/js/error-code').errorCodes;
 const STATUS = { new: "new", active: "active", closed: "closed", project_status: ["new", "on track", "closed"] };
 
 let USERID = 1;
@@ -13,7 +13,6 @@ class ScrumDB {
     constructor(dbPath) {
         this.db = new sqlite3.Database(dbPath);
     }
-
 
     /**
      * Insert values in table
@@ -35,7 +34,7 @@ class ScrumDB {
             // verify if the parameters are good to use
             if (!father._verifyParameters(params)) {
                 console.log("Bad Parameters");
-                return reject(errorMsg.BAD_PARAMETER);
+                return reject(errorMsg["BAD_PARAMETER"]);
             }
 
             let create_user = `INSERT INTO USER (user_id, name, email, password, date_user_was_added) VALUES(?, ?, ?, ?, ?)`;
@@ -93,14 +92,21 @@ class ScrumDB {
         let father = this;
 
         return new Promise(function(resolve, reject){
-
-            if (!father._verifyParameters({ var: email, type: 's', canBeNull: false },))
+            
+            if (!father._verifyParameters([{ var: email, type: 's', canBeNull: false }])){
                 return reject(errorMsg.BAD_PARAMETER);
+            }
             
             let getUserId = 'SELECT user_id FROM USER WHERE USER.email = ?';
-
+            
             father.db.all(getUserId, [email], function(err, result){
-                (err != undefined) ? reject(err) : resolve(result);
+
+                if (err){
+                    reject(err);
+                    return;
+                }
+
+                resolve(result[0]);
             });
         });
     }
@@ -242,10 +248,15 @@ class ScrumDB {
     inviteUserToProject(email, projectId){
         let father = this;
 
+        let params = [
+            { var: email, type: 's', canBeNull: false }, 
+            { var: projectId, type: 'n', canBeNull: false }
+        ];
+
         return new Promise(async function(resolve, reject){
             
             // verify userid
-            if (!father._verifyParameters([{ var: email, type: 's', canBeNull: false }])) {
+            if (!father._verifyParameters(params)) {
                 return reject(errorMsg.BAD_PARAMETER);
             }
 
@@ -255,15 +266,12 @@ class ScrumDB {
                 errorMessage = err;
             });
 
-            console.log("USER ID: ", userId);
-            console.log("Error Message ", errorMessage);
-
-            if (!userId) return reject(errorMsg.USER_NOT_FOUND);
+            if (!userId || errorMessage != undefined) return reject(errorMsg.USER_NOT_FOUND);
 
             let sendInviteToUser = 'INSERT INTO PROJECT_USER_INVITATION(project_id, user_id, date_invitation_was_sent) VALUES (?, ?, ?)';
 
-            father.db.all(sendInviteToUser, [projectId, userId, father._getDate()], function(err, results){
-                (err != undefined) ? reject(err) : resolve(results);
+            father.db.all(sendInviteToUser, [projectId, userId.user_id, father._getDate()], function(err){
+                (err != undefined) ? reject(err) : resolve(true);
             });
         });
     }
@@ -271,3 +279,11 @@ class ScrumDB {
 }
 
 module.exports = { db: ScrumDB, status: STATUS };
+
+// ========= CREATING A USER =========
+// conn.createUser("Raul Pichardo", "raul022107@gmail.com", "xxxxxxx").then((userID) => {
+//     console.log("User was created with the id: ", userID);
+// }).catch((err) => {
+//     console.log("ERROR: ", err);
+// });
+// ==================================

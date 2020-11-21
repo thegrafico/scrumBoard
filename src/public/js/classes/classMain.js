@@ -51,20 +51,24 @@ class Statistics {
 
   /**
    * send an invite user to project
-   * @param {String} usernameOrEmail 
+   * @param {String} email - user email 
    * @returns {Promise} - true if the user was added
    */
-  inviteUserToProject(usernameOrEmail){
-    return new Promise(function(resolve, reject){
-      if (!usernameOrEmail == undefined || !usernameOrEmail.length) return reject("Invalid username or email");
+  inviteUserToProject(email){
+    
+    let father = this;
 
-      // is email
-      if (usernameOrEmail.includes("@")){
-        
-      // is username
-      }else{
+    return new Promise(async function(resolve, reject){
+      
+      if (!email == undefined || !email.length) return reject("Invalid username or email");
 
-      }
+      let inviteWasSent = await conn.inviteUserToProject(email, father.projectId).catch(err => {
+        LOG.error(":: classMain.js :: statistics :: Error inviting user: " + err);
+      });
+      
+      // if invite was sent resolve with true
+      (inviteWasSent) ? resolve(true) : reject(false);
+
     });
   }
 

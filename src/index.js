@@ -18,22 +18,22 @@ if (require("electron-squirrel-startup")) {
 
 // create a rolling file logger based on date/time that fires process events
 const opts = {
-    errorEventName: 'error',
+    // errorEventName: 'error',
     logDirectory: 'log/', // NOTE: folder must exist and be writable...
     fileNamePattern: 'roll-<DATE>.log',
     dateFormat: 'YYYY.MM.DD'
 };
 
+// LOG object 
 const LOG = require('simple-node-logger').createRollingFileLogger(opts);
 
-// ========= CREATING A USER =========
-// conn.createUser("Raul Pichardo", "raul022107@gmail.com", "xxxxxxx").then((userID) => {
-//     console.log("User was created with the id: ", userID);
-// }).catch((err) => {
+// =============== TESTIN DB ===============
+// conn.inviteUserToProject("devpichardo@gmail.com", 2).then(result => {
+//     console.log("SUCCESS: ", result);
+// }).catch(err => {
 //     console.log("ERROR: ", err);
-// });
-// ==================================
-
+// })
+// =========================================
 
 const createWindow = () => {
 
@@ -56,7 +56,7 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, "./views/index.html"));
 
     // Open the DevTools.
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.maximize();
 
