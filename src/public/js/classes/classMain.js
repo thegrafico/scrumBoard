@@ -1,4 +1,69 @@
-class Statistics {
+
+// this class is more used as an abstract class
+class MAIN{
+  
+  // Object to store all events
+  #EVENTS = {};
+
+  // empty constructor
+  constructor(){
+    this.#EVENTS = {};
+  }
+
+   /**
+   * Get the button id
+   * @param {String} key - key of the button
+   * @returns {String} Tag ID if exist, otherwise -1
+   */
+  getBtnId(key){}
+
+  /**
+   * Return the tag id
+   * @param {String} key - tag name
+   * @returns Tag ID if exist, otherwise -1
+   */
+  getTagId(key) {}
+  
+  /**
+   * Store add event so it can be removed later when class is removed
+   *  Ex: {"class": "click"}
+   * @param {String} eventType - event to add - click, change, load
+   * @param {String} element - element to add to event
+   */
+  addEvent(eventType, element) {
+    // early exit condition
+    if (!eventType || !element) {
+      return;
+    }
+
+    // add listener to EVENT object
+    this.#EVENTS[element] = eventType;
+  }
+
+  /**
+   * This function should be available in all clases. TODO: inherance
+   * Unbind all events added with this class
+   * @returns {Boolean} - true if a least one event was unbind
+   */
+  unload() {
+    let events = this.#EVENTS;
+    let count = 0;
+    for (let key in events) {
+      $("body").off(events[key], key);
+      count += 1;
+    }
+
+    return count > 0;
+  }
+}
+
+
+
+/**
+ * Statistics Main class
+ *  This class is used in the statistics page. Main functionalities are here - create, remove, edit
+ */
+class Statistics extends MAIN{
   static VIEW_PATH = "../views/partials/project-statistics.html";
 
   #buttosId = {
@@ -27,9 +92,6 @@ class Statistics {
   // store all project information in a object
   #project = undefined;
 
-  // all events should be stored here, so its more easy remove then when this class is deleted
-  #EVENTS = {};
-
   /**
    * Constructor for the Statistics class
    * @param {Object} conn - database connection
@@ -43,7 +105,7 @@ class Statistics {
     if (conn == undefined) {
       throw "Invalid Connection for Stastistics";
     }
-
+    super();
     this.username = username;
     this.conn = conn;
     this.projectId = projectId;
@@ -217,34 +279,23 @@ class Statistics {
     return -1;
   }
 
-  /**
-   * Store add event so it can be removed later when class is removed
-   *  Ex: {"class": "click"}
-   * @param {String} eventType - event to add - click, change, load
-   * @param {String} element - element to add to event
-   */
-  addEvent(eventType, element) {
-    // early exit condition
-    if (!eventType || !element) {
-      return;
-    }
-
-    // add listener to EVENT object
-    this.#EVENTS[element] = eventType;
-  }
-
-  /**
-   * This function should be available in all clases. TODO: inherance
-   */
-  unload() {
-    let events = this.#EVENTS;
-
-    for (let key in events) {
-      $("body").off(events[key], key);
-    }
-  }
 }
 
+
+// ================ BACKLOG ================
+class Backlog extends MAIN{
+  
+  // call super - constructor from main
+  constructor(){
+    super();
+  }
+
+}
+
+
+
+// export the classes
 module.exports = {
   Statistics,
+  Backlog, 
 };

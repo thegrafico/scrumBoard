@@ -61,7 +61,7 @@ const linkToQueries = "linkToQueries";
 const linkToWiki = "linkToWiki";
 
 // default template
-let ACTIVE_TEMPLATE = linkToStatistics;
+let ACTIVE_TEMPLATE = linkToBacklog;
 
 // change template btn
 const CHANGE_TEMPLATE_BTN = ".urlBtn";

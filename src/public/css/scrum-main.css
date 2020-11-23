@@ -11,14 +11,15 @@
 }
 
 .box-title {
-    padding-bottom: 0.5%;
+    margin-bottom: 0.5%;
     border-bottom: 1px solid rgba(240, 240, 240, 0.2);
 }
 
-.statistics-boxs .col {
+.statistics-boxs .col, .backlog-box .col{
     margin: 1.5% 1.5% 0 1.5%;
     background-color: #303030 !important;
     border-radius: 2%;
+    
 }
 
 .col-title {
@@ -112,4 +113,28 @@ a:hover {
 /* .modal-lg,
 .modal-xl {
     max-width: 90% !important;
+} */
+
+/* ================= BACK LOAD ================= */
+.addIcon, .settings{
+    color: white;
+    font-size: 1em;
+    margin:0;
+    padding: 0;
+}
+
+.backlogTitlte{
+    border-right: 1px solid slategray;
+    margin-left: 3%;
+}
+
+#createNewTaskBtn, #backLogSettingsBtn{
+    font-size: 1.2em;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+}
+/* 
+#createNewTask:hover{
+    color: seagreen;   
 } */
