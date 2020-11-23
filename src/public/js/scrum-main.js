@@ -4,6 +4,7 @@ const { remote } = require("electron");
 const { conn, status, session, LOG } = remote.require("./index.js"); // getting the DB connection
 const { redirect, isObjectEmpty } = require("../public/js/helper-functions.js");
 const { Statistics } = require("../public/js/classes/classMain.js");
+const ConsoleAppender = require("simple-node-logger/lib/ConsoleAppender");
 
 // ==================== VARIABLES =========================
 const SIDE_BAR = "#sidebarCollapse";
@@ -139,9 +140,14 @@ function clearTemplate() {
 
 /**
  * load the modal dynamically
- * @param {String} url - template name
+ * @param {String} url - clicked element id
  */
 function loadModal(url) {
+
+  let parent = $(`#${url}`).parent();
+
+  $(parent).addClass("active");
+
 
 	// get the view to be loaded
   let view = DYNAMIC_TEMPLATE_SCRIPTS_FOR_TEMPLATE[url]["view"];
@@ -193,10 +199,16 @@ $(document).ready(async function () {
   $(CHANGE_TEMPLATE_BTN).on("click", function () {
     
     // getting the template to load
-    let templateId = $(this).attr("id");		
+    let templateId = $(this).attr("id");
 		
     // clean only if not is the active template
     if (ACTIVE_TEMPLATE != templateId) {
+      
+      // get link active
+      let liActive = $(`#${ACTIVE_TEMPLATE}`).parent();
+
+      // remove the active style in link
+      $(liActive).removeClass("active");
       
       // clean the class and remove all events listener
       clearTemplate();        
