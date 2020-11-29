@@ -73,7 +73,7 @@ $(document).ready(async function () {
     }
   });
 
-  // ================= clean up the modals =========================
+  // ================= clean up the modals when they are opened out =========================
 
   // ===== CREATE USER
   CURRENT_CLASS.addEvent("show.bs.modal", "#create-user");

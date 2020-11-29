@@ -4,5 +4,6 @@
  */
 
 $(document).ready(function () {
-  console.log("HELLOW FOR BOARD-MAIN");
+  LOG.info(":: board-main.js:: dynamic script was loaded");
+  
 });
