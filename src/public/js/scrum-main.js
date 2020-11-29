@@ -3,7 +3,7 @@ window.$ = window.jQuery = require("../public/js/jquery3.5.2.js");
 const { remote } = require("electron");
 const { conn, status, session, LOG } = remote.require("./index.js"); // getting the DB connection
 const { redirect, isObjectEmpty } = require("../public/js/helper-functions.js");
-const { Statistics } = require("../public/js/classes/classMain.js");
+const { Statistics, Backlog} = require("../public/js/classes/classMain.js");
 const ConsoleAppender = require("simple-node-logger/lib/ConsoleAppender");
 
 // ==================== VARIABLES =========================

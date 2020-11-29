@@ -284,10 +284,58 @@ class Statistics extends MAIN{
 
 // ================ BACKLOG ================
 class Backlog extends MAIN{
+
+  #tagsId = {
+    ownerName: "#ownerName",
+    statusList: "#statusMenu",
+    currentStatus: "#currentStatus",
+    startDate: "#startDate",
+    currentSprint: "#currentSprint",
+    projectDescription: "#projectDescription",
+    NumberOfMembers: "#NumberOfMembers",
+    inputUserNameOrEmail: "#usernameOrEmail",
+    inputRemoveUser: "#removeUsersNameOrEmails"
+  };
+
+  #inputTagsId = {
+    itemTitle: {id: "#itemTitle", default: ''},
+    itemDescription: {id: "#itemDescription", default: ''},
+    itemPriority: {id: "#itemPriority", default: 3},
+    itemPoints: {id: "#itemPoints", default: undefined},
+    itemTags:  {id: "#itemTags", default: ''}
+  }
   
-  // call super - constructor from main
-  constructor(){
+  /**
+   * Constructor for the Statistics class
+   * @param {Object} conn - database connection
+   * @param {Number} projectId - id of the project
+   */
+  constructor(conn, projectId, username = undefined) {
+    if (projectId == undefined || isNaN(projectId) || projectId == -1) {
+      throw "Invalid Project Id";
+    }
+
+    if (conn == undefined) {
+      throw "Invalid Connection for Stastistics";
+    }
     super();
+    this.username = username;
+    this.conn = conn;
+    this.projectId = projectId;
+  }
+
+  /**
+   * Clean the value of all tags in html
+   */
+  cleanModalCreateTask(){
+    
+    // get all input tags
+    let inputTags = this.#inputTagsId;
+    
+    // clear the values by the defualt value
+    for (let key in inputTags){
+      $(inputTags[key]["id"]).val(inputTags[key]["default"]);
+    }
   }
 
 }
