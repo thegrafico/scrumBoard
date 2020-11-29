@@ -1,44 +1,104 @@
 <div class="box-title">
 
-    <div class="row">
-        <div class="col-1">
-            <h3>Backlog <span class="backlogTitlte"></span> </h3>
+    <nav class="navbar navbar-expand-lg">
+        <h1 class="navbar-brand" id='box-title-title'>Backlog </h1>
+
+        <div class="collapse navbar-collapse" id="navbarColor01" style="margin-left: 2%;">
+
+            <ul class="navbar-nav mr-auto">
+                <button id="createNewTaskBtn" type="button" class="btn btn-success">
+                    <i class="fas fa-plus addIcon"></i> New Item
+                </button>
+            </ul>
+
+            <div class="form-inline my-2 my-lg-0">
+                <ul class="navbar-nav mr-auto">
+
+                    <li class="nav-item backlog-nav-item">
+                        <button id="backlog-filter-btn" type="button" class="btn btn-secondary">
+                            <i class="fas fa-filter filterIcon"></i>
+                        </button>
+                    </li>
+
+                    <li class="nav-item backlog-nav-item">
+                        <button id="backlog-save-icon-btn" type="button" class="btn btn-info">
+                            <i class="fas fa-save"></i>
+                        </button>
+                    </li>
+
+                    <!-- Adding extra spaces -->
+                    <li class="nav-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                    </li>
+
+                </ul>
+                <!-- <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> -->
+            </div>
         </div>
-
-        <!-- ADD BTN -->
-        <div class="col-2">
-            <button id="createNewTaskBtn" type="button" class="btn btn-success">
-                <i class="fas fa-plus addIcon"></i> New Item
-            </button>
-        </div>
-
-        <!-- <div class="col-2">
-            <button id="backLogSettingsBtn" type="button" class="btn btn-secondary"> 
-                <i class="fas fa-cog settings"></i>  Settings
-            </button>
-        </div> -->
-
-        <!-- FILTER BTN -->
-        <div class="col-2">
-            <button id="filterBackLogBtn" type="button" class="btn btn-secondary">
-                <i class="fas fa-filter filterIcon"></i>
-            </button>
-        </div>
-
-        <!-- SAVE BTN -->
-        <div class="">
-            <button id="saveIconBtn" type="button" class="btn btn-info">
-                <i class="fas fa-save"></i>
-            </button>
-        </div>
-
-    </div>
+    </nav>
 
 </div>
 
 <!--  CONTAINER -->
 <div class="container-fluid backlog-boxs">
     <div class="row">
-        <h2>HERE</h2>
+        <div class="col">
+            <table class="table table-hover">
+
+                <thead>
+                    <tr class="table-primary">
+                        <th scope="row">Story ID</th>
+                        <td>Assigned To</td>
+                        <td>State</td>
+                        <td>Title</td>
+                        <td>Points</td>
+                        <td>Tag</td>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <th scope="row">Default</th>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Default</th>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Default</th>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Default</th>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
     </div>
 </div>

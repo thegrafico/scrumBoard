@@ -128,11 +128,41 @@ a:hover {
     margin-left: 3%;
 }
 
+#backlog-filter-btn, #backlog-save-icon-btn{
+    font-size: 0.8em;
+}
+
+
 #createNewTaskBtn, #backLogSettingsBtn{
-    font-size: 1.2em;
+    font-size: 1em;
     text-transform: capitalize;
     font-weight: bold;
     border: none;
+}
+
+.backlog-nav-item{
+    margin: 0 6%;
+}
+
+#box-title-title{
+    font-size: 2.5em!important;
+}
+
+@media (min-width: 768px){
+    .p-md-5 {
+        padding: 0rem !important
+        /* padding: 3rem !important; */
+    }
+
+}
+
+.table-primary th, .table-primary td, .table-primary thead th, .table-primary tbody+tbody {
+    border-color: transparent !important;
+    font-weight: bold;
+}
+
+.backlog-boxs table{
+    text-align: center;
 }
 /* 
 #createNewTask:hover{
