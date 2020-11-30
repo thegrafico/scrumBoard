@@ -131,9 +131,10 @@
 
 
                             <div class="form-group">
-                                <label for="itemTitle">Item Title</label>
+                                <label for="itemTitle">Item Title*</label>
                                 <input type="text" class="form-control" id="itemTitle" placeholder="Enter title">
                                 <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                <small id="itemTitleErrMsg" class="text-danger invisible">Invalid Title, please try again. Title must have characters and be > 3 characters</small>
                             </div>
 
                             <div class="form-group">
@@ -147,7 +148,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="itemPriority">Select Priority</label>
+                                <label for="itemPriority">Select Priority*</label>
                                 <select class="form-control" id="itemPriority">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -155,14 +156,18 @@
                                     <option value="4">4</option>
                                     <option value="5">5</option>
                                 </select>
+                                <small id="itemPriorityErrMsg" class="text-danger invisible">Invalid option, please try again.</small>
+
                             </div>
 
                             <div class="form-group">
-                                <label for="itemPoints">Item Points</label>
+                                <label for="itemPoints">Item Points*</label>
                                 <input type="number" class="form-control" id="itemPoints" placeholder="Enter Points">
                                 <small class="form-text text-muted">
                                     Points should be: 1, 2, 3, 5, 8, 11, 15, 21 ...
                                 </small>
+                                <small id="itemPointsErrMsg" class="text-danger invisible">Invalid option, Only positive numbers are allowed. (n <= 50)</small>
+
                             </div>
 
                             <div class="form-group">
