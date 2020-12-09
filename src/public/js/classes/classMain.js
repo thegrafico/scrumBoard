@@ -55,6 +55,24 @@ class MAIN{
 
     return count > 0;
   }
+  /**
+   * shows the input message and add the span message from html
+   * @param {String} inputId - id of input element
+   * @param {String} spanId  - id of the span element
+   */
+  showHelperMessage(inputId, spanId){
+    $(inputId).addClass("is-invalid");
+    $(spanId).removeClass("invisible");
+  }
+  /**
+   * Hide the input message and remove the span message from html
+   * @param {String} inputId - id of the input element 
+   * @param {String} spanId  - id of the span element
+   */
+  hideHelperMessage(inputId, spanId){
+    $(inputId).removeClass("is-invalid");
+    $(spanId).addClass("invisible");
+  }
 }
 
 

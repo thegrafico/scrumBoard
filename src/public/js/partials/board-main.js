@@ -12,18 +12,16 @@ $(document).ready(function () {
   // create new task item
   $("#btnCreateItemTask").on("click", function () {
     let itemTitle = $("#itemTitle").val();
-    let itemDescription = $("#itemDescription").val(); // can be empty
+    let itemDescription = $("#itemDescription").val() || ''; // can be empty
     let itemPriority = $("#itemPriority").val();
     let itemPoints = $("#itemPoints").val();
-    let itemTags = $("#itemTags").val(); // can be empty
+    let itemTags = $("#itemTags").val() || []; // can be empty
 
     // verify title
     if (itemTitle == undefined || itemTitle.length < 4 || !isNaN(itemTitle)) {
-      $("#itemTitle").addClass("is-invalid");
-      $("#itemTitleErrMsg").removeClass("invisible");
+      CURRENT_CLASS.showHelperMessage("#itemTitle", "#itemTitleErrMsg");
     } else {
-      $("#itemTitle").removeClass("is-invalid");
-      $("#itemTitleErrMsg").addClass("invisible");
+      CURRENT_CLASS.hideHelperMessage("#itemTitle", "#itemTitleErrMsg");
     }
     
     // verify Points
@@ -32,21 +30,19 @@ $(document).ready(function () {
       isNaN(itemPoints) ||
       itemPoints == '' ||
       itemPoints < 0 ||
-      itemPoints > 50
-    ) {
-      $("#itemPoints").addClass("is-invalid");
-      $("#itemPointsErrMsg").removeClass("invisible");
+      itemPoints > 50)
+    {
+      CURRENT_CLASS.showHelperMessage("#itemPoints", "#itemPointsErrMsg");
     } else {
       $("#itemPoints").removeClass("is-invalid");
-      $("#itemPointsErrMsg").addClass("invisible");
+      CURRENT_CLASS.hideHelperMessage("#itemPoints", "#itemPointsErrMsg");
     }
-    console.log(itemPoints == '')
-    console.log(itemTitle);
-    console.log(itemDescription);
-    console.log(itemPriority);
-    console.log("POINTS: ",itemPoints);
-    console.log(itemTags);
-
+    // console.log(itemPoints == '')
+    // console.log(itemTitle);
+    // console.log(itemDescription);
+    // console.log(itemPriority);
+    // console.log("POINTS: ",itemPoints);
+    // console.log(itemTags);
     // $("#create-task").hide()
   });
 
